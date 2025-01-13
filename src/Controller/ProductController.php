@@ -34,9 +34,15 @@ class ProductController
         $product = Product::hydrateByFetch($stm->fetch());
 
         $adminUserId = $request->getHeader('admin_user_id')[0];
-        $productCategory = $this->categoryService->getProductCategory($product->id)->fetch();
-        $fetchedCategory = $this->categoryService->getOne($adminUserId, $productCategory->id)->fetch();
-        $product->setCategory($fetchedCategory->title);
+        $productCategory = $this->categoryService->getProductCategory($product->id)->fetchAll();
+        // Adição de visualização de categorias MULTIPLAS em um produto
+        foreach ($productCategory as $pcategory) {
+            $fetchedCategory = $this->categoryService->getOne($adminUserId, $pcategory->id)->fetch();
+            $categorys[] =  $fetchedCategory->title;
+        }
+        $product->setCategory($categorys);
+        
+        
 
         $response->getBody()->write(json_encode($product));
         return $response->withStatus(200);
