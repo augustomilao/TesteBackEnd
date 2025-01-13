@@ -33,7 +33,8 @@ class CategoryService
             SELECT *
             FROM category c
             WHERE c.active = 1
-            AND c.company_id = {$this->getCompanyFromAdminUser($adminUserId)}
+            // OR adicionado para as categorias que não possuem company_id (As que são padrão a todas as empresas)
+            AND (c.company_id = {$this->getCompanyFromAdminUser($adminUserId)} OR c.company_id IS NULL)
             AND c.id = {$categoryId}
         ";
 
