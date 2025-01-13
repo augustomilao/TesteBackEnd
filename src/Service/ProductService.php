@@ -14,13 +14,21 @@ class ProductService
 
     public function getAll($adminUserId)
     {
+        // MUDANÇA NA QUERY DO getALL para tambem mostrar todas as categorias
         $query = "
-            SELECT p.*, c.title as category
-            FROM product p
-            INNER JOIN product_category pc ON pc.product_id = p.id
-            INNER JOIN category c ON c.id = pc.cat_id
-            WHERE p.company_id = {$adminUserId}
-        ";
+            SELECT 
+                p.*, 
+                GROUP_CONCAT(c.title, ', ') AS categories
+            FROM 
+                product p
+            INNER JOIN 
+                product_category pc ON pc.product_id = p.id
+            INNER JOIN 
+                category c ON c.id = pc.cat_id
+            WHERE 
+                p.company_id = {$adminUserId}
+            GROUP BY 
+                p.id;";
 
         $stm = $this->pdo->prepare($query);
 
