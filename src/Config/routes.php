@@ -18,6 +18,7 @@ $app->group('/companies', function (RouteCollectorProxy $group) {
 
 $app->group('/products', function (RouteCollectorProxy $group) {
     $group->get('', [ProductController::class, 'getAll']);
+    $group->get('/filter/{id}', [ProductController::class, 'getAllFiltered']);
     $group->get('/{id}', [ProductController::class, 'getOne']);
     $group->post('', [ProductController::class, 'insertOne']);
     $group->put('/{id}', [ProductController::class, 'updateOne']);

@@ -37,6 +37,115 @@ class ProductService
         return $stm;
     }
 
+    public function getAllFiltered($adminUserId, $filter)
+    {
+        $query = "";
+        switch ($filter) {
+            case 1: // Ativos
+                $query = "
+                SELECT 
+                    p.*, 
+                    GROUP_CONCAT(c.title, ', ') AS categories
+                FROM 
+                    product p
+                INNER JOIN 
+                    product_category pc ON pc.product_id = p.id
+                INNER JOIN 
+                    category c ON c.id = pc.cat_id
+                WHERE 
+                    p.company_id = {$adminUserId} AND p.active = 1
+                GROUP BY 
+                    p.id;";
+                break;
+            case 2: // Desativados
+                $query = "
+                SELECT 
+                    p.*, 
+                    GROUP_CONCAT(c.title, ', ') AS categories
+                FROM 
+                    product p
+                INNER JOIN 
+                    product_category pc ON pc.product_id = p.id
+                INNER JOIN 
+                    category c ON c.id = pc.cat_id
+                WHERE 
+                    p.company_id = {$adminUserId} AND p.active = 0
+                GROUP BY 
+                    p.id;";
+                break;
+            case 3: // Data ASC
+                $query = "
+                SELECT 
+                    p.*, 
+                    GROUP_CONCAT(c.title, ', ') AS categories
+                FROM 
+                    product p
+                INNER JOIN 
+                    product_category pc ON pc.product_id = p.id
+                INNER JOIN 
+                    category c ON c.id = pc.cat_id
+                WHERE 
+                    p.company_id = {$adminUserId}
+                GROUP BY 
+                    p.id
+                ORDER BY 
+                    p.created_at ASC;";
+                break;
+            case 4: // Data DESC
+                $query = "
+                SELECT 
+                    p.*, 
+                    GROUP_CONCAT(c.title, ', ') AS categories
+                FROM 
+                    product p
+                INNER JOIN 
+                    product_category pc ON pc.product_id = p.id
+                INNER JOIN 
+                    category c ON c.id = pc.cat_id
+                WHERE 
+                    p.company_id = {$adminUserId}
+                GROUP BY 
+                    p.id
+                ORDER BY 
+                    p.created_at DESC;";
+                break;
+            default:
+                // TODO: Verificar se categoria existe
+                $query = "SELECT id, title FROM category";
+                $stm = $this->pdo->prepare($query);
+                $stm->execute();
+                $filtrosExistentes = $stm->fetchAll();
+                if ($filter && in_array($filter, array_column($filtrosExistentes, 'title'))) {
+                    $query = "
+                        SELECT 
+                            p.*, 
+                            GROUP_CONCAT(c.title, ', ') AS categories
+                        FROM 
+                            product p
+                        INNER JOIN 
+                            product_category pc ON pc.product_id = p.id
+                        INNER JOIN 
+                            category c ON c.id = pc.cat_id
+                        WHERE 
+                            p.company_id = {$adminUserId} and c.title = '{$filter}'
+                        GROUP BY 
+                            p.id;";
+                } else {
+                    echo "Filtro: $filter Não Existe";
+                    die;
+                }
+
+                break;
+        }
+
+        $stm = $this->pdo->prepare($query);
+
+        $stm->execute();
+
+        return $stm;
+    }
+
+
     public function getOne($id)
     {
         $stm = $this->pdo->prepare("
@@ -139,7 +248,7 @@ class ProductService
         ");
         if (!$stm->execute())
             return false;
-        
+
         $stm = $this->pdo->prepare("DELETE FROM product WHERE id = {$id}");
         if (!$stm->execute())
             return false;
