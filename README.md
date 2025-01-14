@@ -22,7 +22,7 @@
 
 ## Sobre a API
 As rotas estão divididas em:
-  -  _CRUD_ de _categorias_;
+  - _CRUD_ de _categorias_;
   - _CRUD_ de _produtos_;
   - Rota de busca de um _relatório_ que retorna um _html_.
 
@@ -43,19 +43,19 @@ Caso opte por usar o [Postman](https://www.postman.com/) o arquivo para importa�
 Abaixo, as solicitações do cliente:
 
 ### Categorias
-- [ ] A categoria está vindo errada na listagem de produtos para alguns casos
+- [X] A categoria está vindo errada na listagem de produtos para alguns casos
   (_exemplo: produto `blue trouser` está vindo na categoria `phone` e deveria ser `clothing`_);
-- [ ] Alguns produtos estão vindo com a categoria `null` ao serem pesquisados individualmente (_exemplo: produto `iphone 8`_);
-- [ ] Cadastrei o produto `king size bed` em mais de uma categoria, mas ele aparece **apenas** na categoria `furniture` na busca individual do produto.
+- [X] Alguns produtos estão vindo com a categoria `null` ao serem pesquisados individualmente (_exemplo: produto `iphone 8`_);
+- [X] Cadastrei o produto `king size bed` em mais de uma categoria, mas ele aparece **apenas** na categoria `furniture` na busca individual do produto.
 
 ### Filtros e Ordenamento
 Para a listagem de produtos:
-- [ ] Gostaria de poder filtrar os produtos ativos e inativos;
-- [ ] Gostaria de poder filtrar os produtos por categoria;
-- [ ] Gostaria de poder ordenar os produtos por data de cadastro.
+- [X] Gostaria de poder filtrar os produtos ativos e inativos;
+- [X] Gostaria de poder filtrar os produtos por categoria;
+- [X] Gostaria de poder ordenar os produtos por data de cadastro.
 
 ### Relatório
-- [ ] O relatório não está mostrando a coluna de logs corretamente, se possível, gostaria de trazer no seguinte formato:
+- [X] O relatório não está mostrando a coluna de logs corretamente, se possível, gostaria de trazer no seguinte formato:
   (Nome do usuário, Tipo de alteração e Data),
   (Nome do usuário, Tipo de alteração e Data),
   (Nome do usuário, Tipo de alteração e Data)
@@ -65,7 +65,8 @@ Para a listagem de produtos:
   (Joe Doe, Remoção, 21/12/2023 14:52:50)
 
 ### Logs
-- [ ] Gostaria de saber qual usuário mudou o preço do produto `iphone 8` por último.
+- [X] Gostaria de saber qual usuário mudou o preço do produto `iphone 8` por último.
+  (2 resoluções, /reports (Mostrando todos) e /products/id (Mostrando o ultimo))
 
 ### Extra
 - [ ] Aqui fica um desafio extra **opcional**: _criar um ambiente com_ Docker _para a api_.
@@ -79,4 +80,15 @@ Sinta-se a vontade para refatorar o que achar pertinente, considerando questões
 Boa sorte! :)
 
 ## Suas Respostas, Duvidas e Observações
-[Adicione  aqui suas respostas, dúvidas e observações]
+
+1 - Adição de condição para categorias sem companyID, (que todas as empreas a possuem)
+
+2 - GetAll pegando ID, mudado para cat_Id para se relacionar corretamente com a tabela category
+
+3 - getOne mostrando todas as categorias de um produto, não apenas uma (Mudei o getAll, para mostrar todas as categorias dos produtos)
+
+4 - Mudei o jeito q os LOGS são expostos, transformando eles em string, no formato e ordem (Nome do usuário, Tipo de alteração e Data)
+
+5 - Adicionei o campo "Ultima modificação" na busca getOne do ENDPOINT Product, e no report/log - foram ordenados de forma ao ultimo aparecer primeiro, tendo 2 lugares para verificar a ultima modificação
+
+6 - Criação de novo ENDPOINT, para buscar produtos de forma filtrada, necessário mudar documentação da API para demostrar o novo endpoint
