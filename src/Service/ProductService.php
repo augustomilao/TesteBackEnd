@@ -166,10 +166,24 @@ class ProductService
             SELECT a.name, p.action, p.timestamp
             FROM product_log p 
             INNER JOIN admin_user a ON a.id = p.admin_user_id
-            WHERE product_id = {$id}
+            WHERE product_id = {$id} ORDER BY p.timestamp DESC
         ");
         $stm->execute();
 
         return $stm;
+    }
+
+    public function getLastMod($id)
+    {
+        $stm = $this->pdo->prepare("
+            SELECT a.name, p.action, p.timestamp
+            FROM product_log p 
+            INNER JOIN admin_user a ON a.id = p.admin_user_id
+            WHERE product_id = {$id} ORDER BY p.timestamp DESC
+            LIMIT 1
+        ");
+        $stm->execute();
+
+        return $stm->fetch();
     }
 }

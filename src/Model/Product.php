@@ -5,7 +5,7 @@ namespace Contatoseguro\TesteBackend\Model;
 class Product
 {
 
-    public $category;
+
 
     public function __construct(
         public int $id,
@@ -17,6 +17,9 @@ class Product
     ) {
     }
 
+    public $category;
+    public string $LastMod;
+    
     public static function hydrateByFetch($fetch): self
     {
         return new self(
@@ -32,5 +35,10 @@ class Product
     public function setCategory($category)
     {
         $this->category = $category;
+    }
+
+    public function setLastMod($LastMod)
+    {
+        $this->LastMod = $LastMod;
     }
 }

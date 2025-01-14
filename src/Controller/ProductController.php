@@ -22,7 +22,7 @@ class ProductController
     public function getAll(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $adminUserId = $request->getHeader('admin_user_id')[0];
-        
+        // Todo: Criar filtros Ativo, Inativo, Por categoria, Por data de criação
         $stm = $this->service->getAll($adminUserId);
         $response->getBody()->write(json_encode($stm->fetchAll()));
         return $response->withStatus(200);
@@ -32,6 +32,9 @@ class ProductController
     {
         $stm = $this->service->getOne($args['id']);
         $product = Product::hydrateByFetch($stm->fetch());
+        $LastMod = $this->service->getLastMod($args['id']);
+        $LastMod = (array) $LastMod;
+        $LastMod = implode(' - ', $LastMod);
 
         $adminUserId = $request->getHeader('admin_user_id')[0];
         $productCategory = $this->categoryService->getProductCategory($product->id)->fetchAll();
@@ -41,6 +44,7 @@ class ProductController
             $categorys[] =  $fetchedCategory->title;
         }
         $product->setCategory($categorys);
+        $product->setLastMod($LastMod);
         
         
 
