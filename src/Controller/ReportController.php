@@ -43,7 +43,7 @@ class ReportController
             $stm = $this->productService->getLog($product->id);
             $productLogs = $stm->fetchAll(); 
             foreach ($productLogs as $j => $productLog) {
-                $productLogs[$j] = $productLog->name . ' - ' . $productLog->action . ' - ' . $productLog->timestamp;
+                $productLogs[$j] = "( ". $productLog->name . ' - ' . $productLog->action . ' - ' . $productLog->timestamp . " )";
             }
             
             $data[$i+1][] = $product->id;
