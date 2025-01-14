@@ -1,0 +1,14 @@
+services:
+  php:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge
