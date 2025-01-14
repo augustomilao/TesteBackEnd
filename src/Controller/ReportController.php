@@ -41,21 +41,32 @@ class ReportController
             $companyName = $stm->fetch()->name;
 
             $stm = $this->productService->getLog($product->id);
-            $productLogs = $stm->fetchAll();
+            $productLogs = $stm->fetchAll(); 
+            foreach ($productLogs as $j => $productLog) {
+                $productLogs[$j] = $productLog->name . ' - ' . $productLog->action . ' - ' . $productLog->timestamp;
+            }
             
             $data[$i+1][] = $product->id;
             $data[$i+1][] = $companyName;
             $data[$i+1][] = $product->title;
             $data[$i+1][] = $product->price;
-            $data[$i+1][] = $product->category;
+            $data[$i+1][] = $product->categories;
             $data[$i+1][] = $product->created_at;
             $data[$i+1][] = $productLogs;
+
         }
         
         $report = "<table style='font-size: 10px;'>";
         foreach ($data as $row) {
             $report .= "<tr>";
             foreach ($row as $column) {
+                // Lidar com produtos de mais de uma categoria
+                if (is_object($column)) {
+                    $column = implode(', ', (array)$column);
+                }
+                if (is_array($column)) {
+                    $column = implode(', ', $column);
+                }
                 $report .= "<td>{$column}</td>";
             }
             $report .= "</tr>";

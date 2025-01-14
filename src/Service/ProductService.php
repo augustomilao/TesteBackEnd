@@ -161,9 +161,11 @@ class ProductService
 
     public function getLog($id)
     {
+        // TODO: (Nome do usuário, Tipo de alteração e Data)
         $stm = $this->pdo->prepare("
-            SELECT *
-            FROM product_log
+            SELECT a.name, p.action, p.timestamp
+            FROM product_log p 
+            INNER JOIN admin_user a ON a.id = p.admin_user_id
             WHERE product_id = {$id}
         ");
         $stm->execute();
