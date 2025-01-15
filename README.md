@@ -69,7 +69,7 @@ Para a listagem de produtos:
   (2 resoluções, /reports (Mostrando todos) e /products/id (Mostrando o ultimo))
 
 ### Extra
-- [ ] Aqui fica um desafio extra **opcional**: _criar um ambiente com_ Docker _para a api_.
+- [X] Aqui fica um desafio extra **opcional**: _criar um ambiente com_ Docker _para a api_.
 
 **Seu trabalho é atender às 7 demandas solicitadas pelo cliente.**
 
