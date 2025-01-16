@@ -92,3 +92,15 @@ Boa sorte! :)
 5 - Adicionei o campo "Ultima modificação" na busca getOne do ENDPOINT Product, e no report/log - foram ordenados de forma ao ultimo aparecer primeiro, tendo 2 lugares para verificar a ultima modificação
 
 6 - Criação de novo ENDPOINT, para buscar produtos de forma filtrada, necessário mudar documentação da API para demostrar o novo endpoint
+
+[PARA ACESSAR A NOVA ROTA USE: {{ _.base_url }}{{ _.products}}/filter/{opcoes}
+
+Opções = [
+  1 = ATIVOS,
+  2 = INATIVOS,
+  3 = Data ASC,
+  4 = Data DESC
+  5 = "Nome da categoria"
+]
+
+]
